@@ -1,4 +1,4 @@
-var join = require('path').join;
+var up = require('./lib/up');
 var slice = [].slice;
 
 module.exports = sub;
@@ -24,7 +24,7 @@ function sub(_fs, dir) {
     if (!_fs[m]) return;
     fs[m] = function() {
       var args = slice.call(arguments);
-      args[0] = join(dir, args[0]);
+      args[0] = up(dir, args[0]);
       return _fs[m].apply(_fs, args);
     }
   });
@@ -36,8 +36,8 @@ function sub(_fs, dir) {
     if (!_fs[m]) return;
     fs[m] = function() {
       var args = slice.call(arguments);
-      args[0] = join(dir, args[0]);
-      args[1] = join(dir, args[1]);
+      args[0] = up(dir, args[0]);
+      args[1] = up(dir, args[1]);
       return _fs[m].apply(_fs, args);
     };
   });
