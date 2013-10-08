@@ -3,6 +3,8 @@
 
 Create subfilesystems that are rooted at a specific directory.
 
+[![build status](https://secure.travis-ci.org/juliangruber/subfs.png)](http://travis-ci.org/juliangruber/subfs)
+
 ## Example
 
 ```js
