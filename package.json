@@ -1,6 +1,6 @@
 {
   "name": "subfs",
-  "description": "Sub filesystems",
+  "description": "Create subfilesystems that are rooted at a specific directory.",
   "version": "0.0.0",
   "repository": {
     "type": "git",
