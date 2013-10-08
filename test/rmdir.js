@@ -22,7 +22,6 @@ test('rmdirSync', function(t) {
   var dir = join(os.tmpdir(), Math.random().toString(16).slice(2));
 
   fs.mkdirSync(dir);
-  fs.writeFileSync(join(dir, 'file.txt'), 'foobar');
   fs.mkdirSync(join(dir, 'dir'));
 
   subfs(fs, dir).rmdirSync('dir');
