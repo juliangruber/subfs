@@ -1,0 +1,31 @@
+{
+  "name": "subfs",
+  "description": "Sub filesystems",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/juliangruber/subfs.git"
+  },
+  "homepage": "https://github.com/juliangruber/subfs",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap test/*.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "tap": "~0.4.4"
+  },
+  "keywords": [
+    "fs",
+    "filesystem",
+    "files",
+    "prefix",
+    "composable"
+  ],
+  "author": {
+    "name": "Julian Gruber",
+    "email": "mail@juliangruber.com",
+    "url": "http://juliangruber.com"
+  },
+  "license": "MIT"
+}
