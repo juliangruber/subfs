@@ -1,9 +1,21 @@
-
 # subfs
 
 Create subfilesystems that are rooted at a specific directory.
 
 [![build status](https://secure.travis-ci.org/juliangruber/subfs.png)](http://travis-ci.org/juliangruber/subfs)
+
+## Motivation
+
+Node's filesystem api isn't very composable because you can't pass a filesystem referecne to a directory,
+you only can pass path prefixes to libraries that do something with the filesystem.
+
+That approach has the downside that all those libraries require the `fs` module themselves, so they
+don't run on the client, because you can't pass in a custom filesystem instance (which could be backed
+by IndexDB or LocalStore for example). Yes, dependency injection.
+
+So with this module, you can pass references to file system paths, that a module can treat as the root
+filesystem and can't write outside of (unless it's doing some magic native bindings stuff). Now you just
+need to encource developers to accept `subfs` instances instead of paths in their modules!
 
 ## Example
 
