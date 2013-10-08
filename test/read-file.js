@@ -5,26 +5,23 @@ var os = require('os');
 var join = require('path').join;
 
 test('readFile', function(t) {
-  t.plan(3);
-  var dir = os.tmpdir();
+  t.plan(2);
+  var dir = join(os.tmpdir(), Math.random().toString(16).slice(2));
+  fs.mkdirSync(dir);
+  fs.writeFileSync(join(dir, 'file.txt'), 'foobar');
 
-  fs.writeFile(join(dir, 'file.txt'), 'foobar', function(err) {
+  subfs(fs, dir).readFile('file.txt', function(err, value) {
     t.error(err);
-
-    subfs(fs, dir).readFile('file.txt', function(err, value) {
-      t.error(err);
-      t.equal(value.toString(), 'foobar');
-    });
+    t.equal(value.toString(), 'foobar');
   });
 });
 
 test('readFileSync', function(t) {
-  t.plan(2);
-  var dir = os.tmpdir();
+  t.plan(1);
+  var dir = join(os.tmpdir(), Math.random().toString(16).slice(2));
+  fs.mkdirSync(dir);
+  fs.writeFileSync(join(dir, 'file.txt'), 'foobar');
 
-  fs.writeFile(join(dir, 'file.txt'), 'foobar', function(err) {
-    t.error(err);
-    t.equal(subfs(fs, dir).readFileSync('file.txt').toString(), 'foobar');
-  });
+  t.equal(subfs(fs, dir).readFileSync('file.txt').toString(), 'foobar');
 });
 

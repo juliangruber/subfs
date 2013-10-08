@@ -5,25 +5,24 @@ var os = require('os');
 var join = require('path').join;
 
 test('exists', function(t) {
-  t.plan(2);
-  var dir = os.tmpdir();
+  t.plan(1);
+  var dir = join(os.tmpdir(), Math.random().toString(16).slice(2));
 
-  fs.writeFile(join(dir, 'file.txt'), 'foobar', function(err) {
-    t.error(err);
+  fs.mkdirSync(dir);
+  fs.writeFileSync(join(dir, 'file.txt'), 'foobar');
 
-    subfs(fs, dir).exists('file.txt', function(exists) {
-      t.ok(exists);
-    });
+  subfs(fs, dir).exists('file.txt', function(exists) {
+    t.ok(exists);
   });
 });
 
 test('existsSync', function(t) {
-  t.plan(2);
-  var dir = os.tmpdir();
+  t.plan(1);
+  var dir = join(os.tmpdir(), Math.random().toString(16).slice(2));
 
-  fs.writeFile(join(dir, 'file.txt'), 'foobar', function(err) {
-    t.error(err);
-    t.ok(subfs(fs, dir).existsSync('file.txt'));
-  });
+  fs.mkdirSync(dir);
+  fs.writeFileSync(join(dir, 'file.txt'), 'foobar');
+
+  t.ok(subfs(fs, dir).existsSync('file.txt'));
 });
 
