@@ -4,24 +4,23 @@ var slice = [].slice;
 module.exports = sub;
 
 function sub(_fs, dir) {
+  // shallow clone
   var fs = {};
-
   Object.keys(_fs).forEach(function(m) {
     fs[m] = _fs[m];
   });
 
   // methods with 1st path argument
   [
-    'exists', 'existsSync', 'readFile', 'readFileSync', 'open', 'openSync', 
-    'truncate', 'truncateSync', 'rmdir', 'rmdirSync', 'mkdir', 'mkdirSync',
-    'readdir', 'readdirSync', 'lstat', 'lstatSync', 'stat', 'statSync',
-    'readlink', 'readlinkSync', 'unlink', 'unlinkSync', 'lchmod',
-    'lchmodSync', 'chmod', 'chmodSync', 'lchown', 'lchownSync', 'chown',
-    'chownSync', 'utimes', 'utimesSync', 'writeFile', 'writeFileSync',
-    'appendFile', 'appendFileSync', 'watch', 'watchFile', 'unwatchFile',
-    'realpath', 'realpathSync', 'createReadStream', 'createWriteStream',
-    'SyncWriteStream'
-  ].forEach(function(m) {
+    'exists', 'readFile', 'open', 'truncate', 'rmdir', 'mkdir', 'readdir',
+    'lstat', 'stat', 'readlink', 'unlink', 'lchmod', 'chmod', 'lchown', 'chown',
+    'utimes', 'writeFile', 'appendFile', 'watch', 'unwatchFile', 'realpath',
+    'createReadStream', 'createWriteStream', 'SyncWriteStream'
+  ]
+  .reduce(function(acc, m) {
+    return acc.concat([m, m + 'Sync']);
+  }, [])
+  .forEach(function(m) {
     if (!_fs[m]) return;
     fs[m] = function() {
       var args = slice.call(arguments);
