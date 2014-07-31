@@ -37,6 +37,31 @@ sub.writeFile('file.txt', 'foobar', function(err) {
 });
 ```
 
+A module that consumes `subfs` could be called like this:
+
+```js
+var fs = require('fs');
+var subfs = require('subfs');
+var Logs = require('your-logs-module');
+
+var logs = Logs(subfs(fs, __dirname + '/logs'));
+```
+
+In the browser, initialize is like this:
+
+```js
+var levelup = require('levelup');
+var leveljs = require('level.js');
+var levelfs = require('level-fs');
+var subfs = require('subfs');
+var Logs = require('your-logs-module');
+
+var db = levelup({ db: leveljs('fs') });
+var fs = levelfs(db);
+
+var logs = Logs(subfs(fs, __dirname + '/logs'));
+```
+
 ## API
 
 ```js
