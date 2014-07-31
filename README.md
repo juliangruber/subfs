@@ -15,7 +15,7 @@ by IndexDB or LocalStore for example). Yes, dependency injection.
 
 So with this module, you can pass references to file system paths, that a module can treat as the root
 filesystem and can't write outside of (unless it's doing some magic native bindings stuff). Now you just
-need to encource developers to accept `subfs` instances instead of paths in their modules!
+need to encourage developers to accept `subfs` instances instead of paths in their modules!
 
 ## Example
 
