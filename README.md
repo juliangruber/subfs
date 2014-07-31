@@ -47,7 +47,7 @@ var Logs = require('your-logs-module');
 var logs = Logs(subfs(fs, __dirname + '/logs'));
 ```
 
-In the browser, initialize is like this:
+In the browser, initialize it like this:
 
 ```js
 var levelup = require('levelup');
