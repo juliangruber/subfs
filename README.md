@@ -50,17 +50,14 @@ var logs = Logs(subfs(fs, __dirname + '/logs'));
 In the browser, initialize it like this:
 
 ```js
-var levelup = require('levelup');
-var leveljs = require('level.js');
-var levelfs = require('level-fs');
+var fs = require('level-fs-browser');
 var subfs = require('subfs');
 var Logs = require('your-logs-module');
 
-var db = levelup({ db: leveljs('fs') });
-var fs = levelfs(db);
-
 var logs = Logs(subfs(fs, __dirname + '/logs'));
 ```
+
+You just need to change one line!
 
 ## API
 
