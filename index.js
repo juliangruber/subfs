@@ -12,10 +12,10 @@ function sub(_fs, dir) {
 
   // methods with 1st path argument
   [
-    'exists', 'readFile', 'open', 'truncate', 'rmdir', 'mkdir', 'readdir',
-    'lstat', 'stat', 'readlink', 'unlink', 'lchmod', 'chmod', 'lchown', 'chown',
-    'utimes', 'writeFile', 'appendFile', 'watch', 'unwatchFile', 'realpath',
-    'createReadStream', 'createWriteStream', 'SyncWriteStream'
+    'access', 'appendFile', 'chmod', 'chown', 'createReadStream',
+    'createWriteStream', 'exists', 'lchmod', 'lchown', 'lstat', 'mkdir', 'open',
+    'readdir', 'readFile', 'readlink', 'realpath', 'rmdir', 'stat', 'truncate',
+    'unlink', 'unwatchFile', 'utimes', 'watch', 'watchFile', 'writeFile'
   ]
   .reduce(function(acc, m) {
     return acc.concat([m, m + 'Sync']);
@@ -31,8 +31,12 @@ function sub(_fs, dir) {
 
   // methods with 1st and 2nd path argemt
   [
-    'rename', 'renameSync', 'symlink', 'symlinkSync', 'link', 'linkSync'
-  ].forEach(function(m) {
+    'copyFile', 'link', 'rename', 'symlink'
+  ]
+  .reduce(function(acc, m) {
+    return acc.concat([m, m + 'Sync']);
+  }, [])
+  .forEach(function(m) {
     if (!_fs[m]) return;
     fs[m] = function() {
       var args = slice.call(arguments);
