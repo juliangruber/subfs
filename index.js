@@ -1,9 +1,37 @@
 var up = require('./lib/up');
 var slice = [].slice;
 
+
+const ONE_ARGUMENT_PROMISES =
+[
+  'access', 'appendFile', 'chmod', 'chown', 'lchmod', 'lchown', 'lstat',
+  'mkdir', 'open', 'readdir', 'readFile', 'readlink', 'realpath', 'rmdir',
+  'stat', 'truncate', 'unlink', 'utimes', 'writeFile'
+]
+
+const TWO_ARGUMENTS_PROMISES =
+[
+  'copyFile', 'link', 'rename', 'symlink'
+]
+
+const ONE_ARGUMENT_CALLBACKS = ONE_ARGUMENT_PROMISES.concat([
+  'createReadStream', 'createWriteStream', 'exists', 'unwatchFile', 'watch',
+  'watchFile'
+]).reduce(reduceSync, [])
+
+const TWO_ARGUMENTS_CALLBACKS = TWO_ARGUMENTS_PROMISES.reduce(reduceSync, [])
+
+
+function reduceSync(acc, m) {
+  return acc.concat([m, m + 'Sync']);
+}
+
+
 module.exports = sub;
 
-function sub(_fs, dir) {
+function sub(_fs, dir,
+  oneArgument = ONE_ARGUMENT_CALLBACKS, twoArguments = TWO_ARGUMENTS_CALLBACKS
+) {
   // shallow clone
   var fs = {};
   Object.keys(_fs).forEach(function(m) {
@@ -11,16 +39,7 @@ function sub(_fs, dir) {
   });
 
   // methods with 1st path argument
-  [
-    'access', 'appendFile', 'chmod', 'chown', 'createReadStream',
-    'createWriteStream', 'exists', 'lchmod', 'lchown', 'lstat', 'mkdir', 'open',
-    'readdir', 'readFile', 'readlink', 'realpath', 'rmdir', 'stat', 'truncate',
-    'unlink', 'unwatchFile', 'utimes', 'watch', 'watchFile', 'writeFile'
-  ]
-  .reduce(function(acc, m) {
-    return acc.concat([m, m + 'Sync']);
-  }, [])
-  .forEach(function(m) {
+  oneArgument.forEach(function(m) {
     if (!_fs[m]) return;
     fs[m] = function() {
       var args = slice.call(arguments);
@@ -30,13 +49,7 @@ function sub(_fs, dir) {
   });
 
   // methods with 1st and 2nd path argemt
-  [
-    'copyFile', 'link', 'rename', 'symlink'
-  ]
-  .reduce(function(acc, m) {
-    return acc.concat([m, m + 'Sync']);
-  }, [])
-  .forEach(function(m) {
+  twoArguments.forEach(function(m) {
     if (!_fs[m]) return;
     fs[m] = function() {
       var args = slice.call(arguments);
@@ -46,6 +59,11 @@ function sub(_fs, dir) {
     };
   });
 
+  // Promises
+  if(_fs.promises) {
+    fs.promises = sub(_fs.promises, dir,
+      ONE_ARGUMENT_PROMISES, TWO_ARGUMENTS_PROMISES);
+  }
+
   return fs;
 }
-
