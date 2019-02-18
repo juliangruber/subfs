@@ -13,7 +13,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "tap": "~10.2.0"
+    "tap": "~12.5.3"
   },
   "keywords": [
     "fs",
