@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 const up = require('./lib/up')
 
 
@@ -70,7 +72,7 @@ function sub (target, src, dir, oneArgumentFunctions, twoArgumentsFunctions) {
 
 
 module.exports = class SubFS {
-  constructor(fs, dir) {
+  constructor(dir, fs=fs) {
     sub(this, fs, dir, ONE_ARGUMENT_CALLBACKS, TWO_ARGUMENTS_CALLBACKS)
 
     // Promises
