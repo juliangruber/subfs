@@ -71,17 +71,21 @@ function sub (target, src, dir, oneArgumentFunctions, twoArgumentsFunctions) {
 }
 
 
-module.exports = class SubFS {
-  constructor(dir, fs=fs) {
-    sub(this, fs, dir, ONE_ARGUMENT_CALLBACKS, TWO_ARGUMENTS_CALLBACKS)
+module.exports = function(dir, fs=fs) {
+  const result = {}
 
-    // Promises
-    const {promises} = fs
-    if(!promises) return
+  Object.defineProperty(result, '_resolve', {value: up.bind(result, dir)})
 
-    const target = {}
-    this.promises = target
+  sub(result, fs, dir, ONE_ARGUMENT_CALLBACKS, TWO_ARGUMENTS_CALLBACKS)
 
-    sub(target, promises, dir, ONE_ARGUMENT_PROMISES, TWO_ARGUMENTS_PROMISES)
-  }
+  // Promises
+  const {promises} = fs
+  if(!promises) return
+
+  const target = {}
+  result.promises = target
+
+  sub(target, promises, dir, ONE_ARGUMENT_PROMISES, TWO_ARGUMENTS_PROMISES)
+
+  return result
 }
