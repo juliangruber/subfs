@@ -16,7 +16,7 @@ test('rmdir', function (t) {
   fs.mkdirSync(dir)
   fs.mkdirSync(join(dir, 'dir'))
 
-  subfs(fs, dir).rmdir('dir', function (err) {
+  subfs(dir, fs).rmdir('dir', function (err) {
     t.error(err)
     t.notOk(fs.existsSync(join(dir, 'dir')))
   })
@@ -34,6 +34,6 @@ test('rmdirSync', function (t) {
   fs.mkdirSync(dir)
   fs.mkdirSync(join(dir, 'dir'))
 
-  subfs(fs, dir).rmdirSync('dir')
+  subfs(dir, fs).rmdirSync('dir')
   t.notOk(fs.existsSync(join(dir, 'dir')))
 })

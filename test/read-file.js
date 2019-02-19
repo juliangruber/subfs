@@ -15,7 +15,7 @@ test('readFile', function (t) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(fs, dir).readFile('file.txt', function (err, value) {
+  subfs(dir, fs).readFile('file.txt', function (err, value) {
     t.error(err)
     t.equal(value.toString(), 'foobar')
   })
@@ -33,7 +33,7 @@ test('readFileSync', function (t) {
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
   t.equal(
-    subfs(fs, dir)
+    subfs(dir, fs)
       .readFileSync('file.txt')
       .toString(),
     'foobar'

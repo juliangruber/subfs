@@ -16,7 +16,7 @@ test('up', function (t) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(fs, dir).exists('../../../../../file.txt', function (exists) {
+  subfs(dir, fs).exists('../../../../../file.txt', function (exists) {
     t.ok(exists)
   })
 })

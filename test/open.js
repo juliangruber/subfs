@@ -15,7 +15,7 @@ test('open', function (t) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(fs, dir).open('file.txt', 'r', function (err, fd) {
+  subfs(dir, fs).open('file.txt', 'r', function (err, fd) {
     t.error(err)
     t.ok(fd)
   })
@@ -32,5 +32,5 @@ test('openSync', function (t) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  t.ok(subfs(fs, dir).openSync('file.txt', 'r'))
+  t.ok(subfs(dir, fs).openSync('file.txt', 'r'))
 })

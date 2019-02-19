@@ -20,10 +20,10 @@ need to encourage developers to accept `subfs` instances instead of paths in the
 ## Example
 
 ```js
-var fs = require('fs');
-var subfs = require('subfs');
+const subfs = require('subfs');
 
-var sub = subfs(fs, __dirname + '/dir');
+
+const sub = subfs(__dirname + '/dir');
 
 // write file.txt into the filesystem mounted at ./dir
 sub.writeFile('file.txt', 'foobar', function(err) {
@@ -31,6 +31,7 @@ sub.writeFile('file.txt', 'foobar', function(err) {
 
   fs.readFile(__dirname + '/dir/file.txt', function(err, value) {
     if (err) throw err;
+
     console.log('value: %s', value);
     // value: foobar
   });
@@ -40,21 +41,20 @@ sub.writeFile('file.txt', 'foobar', function(err) {
 A module that consumes `subfs` could be called like this:
 
 ```js
-var fs = require('fs');
-var subfs = require('subfs');
-var Logs = require('your-logs-module');
+const subfs = require('subfs');
+const Logs = require('your-logs-module');
 
-var logs = Logs(subfs(fs, __dirname + '/logs'));
+const logs = Logs(subfs(__dirname + '/logs'));
 ```
 
 In the browser, initialize it like this:
 
 ```js
-var fs = require('level-fs-browser');
-var subfs = require('subfs');
-var Logs = require('your-logs-module');
+const fs = require('level-fs-browser');
+const subfs = require('subfs');
+const Logs = require('your-logs-module');
 
-var logs = Logs(subfs(fs, __dirname + '/logs'));
+const logs = Logs(subfs(__dirname + '/logs', fs));
 ```
 
 You just need to change one line!
@@ -65,7 +65,7 @@ You just need to change one line!
 var subfs = require('subfs');
 ```
 
-### var sub = subfs(fs, dir)
+### const sub = subfs(dir, fs)
 
 Create a [fs](http://nodejs.org/api/fs.html) clone that prefixes each operation
 with the given `dir`.

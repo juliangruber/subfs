@@ -2,7 +2,6 @@ const fs = require('fs')
 
 const up = require('./lib/up')
 
-
 const ONE_ARGUMENT_PROMISES = [
   'access',
   'appendFile',
@@ -38,7 +37,6 @@ const ONE_ARGUMENT_CALLBACKS = ONE_ARGUMENT_PROMISES.concat([
 
 const TWO_ARGUMENTS_CALLBACKS = TWO_ARGUMENTS_PROMISES.flatMap(mapSync)
 
-
 function mapSync (methodName) {
   return [methodName, `${methodName}Sync`]
 }
@@ -70,17 +68,16 @@ function sub (target, src, dir, oneArgumentFunctions, twoArgumentsFunctions) {
   })
 }
 
-
-module.exports = function(dir, fs=fs) {
+module.exports = function (dir, _fs = fs) {
   const result = {}
 
-  Object.defineProperty(result, '_resolve', {value: up.bind(result, dir)})
+  Object.defineProperty(result, '_resolve', { value: up.bind(result, dir) })
 
-  sub(result, fs, dir, ONE_ARGUMENT_CALLBACKS, TWO_ARGUMENTS_CALLBACKS)
+  sub(result, _fs, dir, ONE_ARGUMENT_CALLBACKS, TWO_ARGUMENTS_CALLBACKS)
 
   // Promises
-  const {promises} = fs
-  if(!promises) return
+  const { promises } = _fs
+  if (!promises) return
 
   const target = {}
   result.promises = target

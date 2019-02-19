@@ -19,7 +19,7 @@ test('nest', function (t) {
   fs.writeFile(join(dir, 'dir', 'file.txt'), 'foobar', function (err) {
     t.error(err)
 
-    subfs(subfs(fs, dir), 'dir').exists('file.txt', function (exists) {
+    subfs('dir', subfs(dir, fs)).exists('file.txt', function (exists) {
       t.ok(exists)
     })
   })

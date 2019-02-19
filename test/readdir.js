@@ -15,7 +15,7 @@ test('readdir', function (t) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(fs, dir).readdir('/', function (err, files) {
+  subfs(dir, fs).readdir('/', function (err, files) {
     t.error(err)
     t.deepEqual(files, ['file.txt'])
   })
@@ -32,5 +32,5 @@ test('readdirSync', function (t) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  t.deepEqual(subfs(fs, dir).readdirSync('/'), ['file.txt'])
+  t.deepEqual(subfs(dir, fs).readdirSync('/'), ['file.txt'])
 })
