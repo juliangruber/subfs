@@ -1,5 +1,5 @@
-var up = require('./lib/up')
-var slice = [].slice
+const up = require('./lib/up')
+
 
 const ONE_ARGUMENT_PROMISES = [
   'access',
@@ -32,58 +32,54 @@ const ONE_ARGUMENT_CALLBACKS = ONE_ARGUMENT_PROMISES.concat([
   'unwatchFile',
   'watch',
   'watchFile'
-]).reduce(reduceSync, [])
+]).flatMap(mapSync)
 
-const TWO_ARGUMENTS_CALLBACKS = TWO_ARGUMENTS_PROMISES.reduce(reduceSync, [])
+const TWO_ARGUMENTS_CALLBACKS = TWO_ARGUMENTS_PROMISES.flatMap(mapSync)
 
-function reduceSync (acc, m) {
-  return acc.concat([m, m + 'Sync'])
+
+function mapSync (methodName) {
+  return [methodName, `${methodName}Sync`]
 }
 
-module.exports = sub
+function sub (target, src, dir, oneArgumentFunctions, twoArgumentsFunctions) {
+  // functions with 1st path argument
+  oneArgumentFunctions.forEach(function (m) {
+    const func = src[m]
+    if (!func) return
 
-function sub (
-  _fs,
-  dir,
-  oneArgument = ONE_ARGUMENT_CALLBACKS,
-  twoArguments = TWO_ARGUMENTS_CALLBACKS
-) {
-  // shallow clone
-  var fs = {}
-  Object.keys(_fs).forEach(function (m) {
-    fs[m] = _fs[m]
-  })
-
-  // methods with 1st path argument
-  oneArgument.forEach(function (m) {
-    if (!_fs[m]) return
-    fs[m] = function () {
-      var args = slice.call(arguments)
+    target[m] = function (...args) {
       args[0] = up(dir, args[0])
-      return _fs[m].apply(_fs, args)
+
+      return func.apply(src, args)
     }
   })
 
-  // methods with 1st and 2nd path argemt
-  twoArguments.forEach(function (m) {
-    if (!_fs[m]) return
-    fs[m] = function () {
-      var args = slice.call(arguments)
+  // functions with 1st and 2nd path arguments
+  twoArgumentsFunctions.forEach(function (m) {
+    const func = src[m]
+    if (!func) return
+
+    target[m] = function (...args) {
       args[0] = up(dir, args[0])
       args[1] = up(dir, args[1])
-      return _fs[m].apply(_fs, args)
+
+      return func.apply(src, args)
     }
   })
+}
 
-  // Promises
-  if (_fs.promises) {
-    fs.promises = sub(
-      _fs.promises,
-      dir,
-      ONE_ARGUMENT_PROMISES,
-      TWO_ARGUMENTS_PROMISES
-    )
+
+module.exports = class SubFS {
+  constructor(fs, dir) {
+    sub(this, fs, dir, ONE_ARGUMENT_CALLBACKS, TWO_ARGUMENTS_CALLBACKS)
+
+    // Promises
+    const {promises} = fs
+    if(!promises) return
+
+    const target = {}
+    this.promises = target
+
+    sub(target, promises, dir, ONE_ARGUMENT_PROMISES, TWO_ARGUMENTS_PROMISES)
   }
-
-  return fs
 }
