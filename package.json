@@ -1,7 +1,7 @@
 {
   "name": "subfs",
   "description": "Create subfilesystems that are rooted at a specific directory.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/juliangruber/subfs.git"
@@ -9,10 +9,12 @@
   "homepage": "https://github.com/juliangruber/subfs",
   "main": "index.js",
   "scripts": {
-    "test": "tap test/*.js"
+    "test": "prettier-standard '**/*.js' && standard && tap test/*.js"
   },
   "dependencies": {},
   "devDependencies": {
+    "prettier-standard": "^9.1.1",
+    "standard": "^12.0.1",
     "tap": "~10.3.0"
   },
   "keywords": [
