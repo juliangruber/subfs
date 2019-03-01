@@ -1,11 +1,11 @@
-var test = require('tap').test
 var fs = require('fs')
-var subfs = require('..')
 var os = require('os')
 var join = require('path').join
 
-test('rmdir', function (t) {
-  t.plan(2)
+var subfs = require('..')
+
+test('rmdir', function (done) {
+  expect.assertions(2)
   var dir = join(
     os.tmpdir(),
     Math.random()
@@ -17,13 +17,15 @@ test('rmdir', function (t) {
   fs.mkdirSync(join(dir, 'dir'))
 
   subfs(dir, fs).rmdir('dir', function (err) {
-    t.error(err)
-    t.notOk(fs.existsSync(join(dir, 'dir')))
+    expect(err).toBeFalsy()
+    expect(fs.existsSync(join(dir, 'dir'))).toBeFalsy()
+
+    done()
   })
 })
 
-test('rmdirSync', function (t) {
-  t.plan(1)
+test('rmdirSync', function () {
+  expect.assertions(1)
   var dir = join(
     os.tmpdir(),
     Math.random()
@@ -35,5 +37,5 @@ test('rmdirSync', function (t) {
   fs.mkdirSync(join(dir, 'dir'))
 
   subfs(dir, fs).rmdirSync('dir')
-  t.notOk(fs.existsSync(join(dir, 'dir')))
+  expect(fs.existsSync(join(dir, 'dir'))).toBeFalsy()
 })

@@ -1,11 +1,11 @@
-var test = require('tap').test
 var fs = require('fs')
-var subfs = require('..')
 var os = require('os')
 var join = require('path').join
 
-test('exists', function (t) {
-  t.plan(1)
+var subfs = require('..')
+
+test('exists', function (done) {
+  expect.assertions(1)
   var dir = join(
     os.tmpdir(),
     Math.random()
@@ -17,12 +17,14 @@ test('exists', function (t) {
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
   subfs(dir, fs).exists('file.txt', function (exists) {
-    t.ok(exists)
+    expect(exists).toBeTruthy()
+
+    done()
   })
 })
 
-test('existsSync', function (t) {
-  t.plan(1)
+test('existsSync', function () {
+  expect.assertions(1)
   var dir = join(
     os.tmpdir(),
     Math.random()
@@ -33,5 +35,5 @@ test('existsSync', function (t) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  t.ok(subfs(dir, fs).existsSync('file.txt'))
+  expect(subfs(dir, fs).existsSync('file.txt')).toBeTruthy()
 })

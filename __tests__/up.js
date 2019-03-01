@@ -1,11 +1,11 @@
-var test = require('tap').test
 var fs = require('fs')
-var subfs = require('..')
 var os = require('os')
 var join = require('path').join
 
-test('up', function (t) {
-  t.plan(1)
+var subfs = require('..')
+
+test('up', function (done) {
+  expect.assertions(1)
   var dir = join(
     os.tmpdir(),
     Math.random()
@@ -17,6 +17,8 @@ test('up', function (t) {
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
   subfs(dir, fs).exists('../../../../../file.txt', function (exists) {
-    t.ok(exists)
+    expect(exists).toBeTruthy()
+
+    done()
   })
 })

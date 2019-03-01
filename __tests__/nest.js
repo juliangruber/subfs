@@ -1,11 +1,11 @@
-var test = require('tap').test
 var fs = require('fs')
-var subfs = require('..')
 var os = require('os')
 var join = require('path').join
 
-test('nest', function (t) {
-  t.plan(2)
+var subfs = require('..')
+
+test('nest', function (done) {
+  expect.assertions(2)
   var dir = join(
     os.tmpdir(),
     Math.random()
@@ -17,10 +17,12 @@ test('nest', function (t) {
   fs.mkdirSync(join(dir, 'dir'))
 
   fs.writeFile(join(dir, 'dir', 'file.txt'), 'foobar', function (err) {
-    t.error(err)
+    expect(err).toBeFalsy()
 
     subfs('dir', subfs(dir, fs)).exists('file.txt', function (exists) {
-      t.ok(exists)
+      expect(exists).toBeTruthy()
+
+      done()
     })
   })
 })

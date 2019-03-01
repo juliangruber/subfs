@@ -1,11 +1,11 @@
-var test = require('tap').test
 var fs = require('fs')
-var subfs = require('..')
 var os = require('os')
 var join = require('path').join
 
-test('stat', function (t) {
-  t.plan(2)
+var subfs = require('..')
+
+test('readFile', function (done) {
+  expect.assertions(2)
   var dir = join(
     os.tmpdir(),
     Math.random()
@@ -15,14 +15,16 @@ test('stat', function (t) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(dir, fs).stat('file.txt', function (err, stat) {
-    t.error(err)
-    t.ok(stat)
+  subfs(dir, fs).readFile('file.txt', function (err, value) {
+    expect(err).toBeFalsy()
+    expect(value.toString()).toStrictEqual('foobar')
+
+    done()
   })
 })
 
-test('statSync', function (t) {
-  t.plan(1)
+test('readFileSync', function () {
+  expect.assertions(1)
   var dir = join(
     os.tmpdir(),
     Math.random()
@@ -32,5 +34,9 @@ test('statSync', function (t) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  t.ok(subfs(dir, fs).statSync('file.txt'))
+  expect(
+    subfs(dir, fs)
+      .readFileSync('file.txt')
+      .toString()
+  ).toStrictEqual('foobar')
 })

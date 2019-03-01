@@ -1,11 +1,11 @@
-var test = require('tap').test
 var fs = require('fs')
-var subfs = require('..')
 var os = require('os')
 var join = require('path').join
 
-test('readdir', function (t) {
-  t.plan(2)
+var subfs = require('..')
+
+test('readdir', function (done) {
+  expect.assertions(2)
   var dir = join(
     os.tmpdir(),
     Math.random()
@@ -16,13 +16,15 @@ test('readdir', function (t) {
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
   subfs(dir, fs).readdir('/', function (err, files) {
-    t.error(err)
-    t.deepEqual(files, ['file.txt'])
+    expect(err).toBeFalsy()
+    expect(files).toEqual(['file.txt'])
+
+    done()
   })
 })
 
-test('readdirSync', function (t) {
-  t.plan(1)
+test('readdirSync', function () {
+  expect.assertions(1)
   var dir = join(
     os.tmpdir(),
     Math.random()
@@ -32,5 +34,5 @@ test('readdirSync', function (t) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  t.deepEqual(subfs(dir, fs).readdirSync('/'), ['file.txt'])
+  expect(subfs(dir, fs).readdirSync('/')).toEqual(['file.txt'])
 })

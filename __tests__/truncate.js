@@ -1,11 +1,11 @@
-var test = require('tap').test
 var fs = require('fs')
-var subfs = require('..')
 var os = require('os')
 var join = require('path').join
 
-test('truncate', function (t) {
-  t.plan(2)
+var subfs = require('..')
+
+test('truncate', function (done) {
+  expect.assertions(2)
   var dir = join(
     os.tmpdir(),
     Math.random()
@@ -17,13 +17,17 @@ test('truncate', function (t) {
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
   subfs(dir, fs).truncate('file.txt', 0, function (err) {
-    t.error(err)
-    t.equal(fs.readFileSync(join(dir, 'file.txt')).toString().length, 0)
+    expect(err).toBeFalsy()
+    expect(
+      fs.readFileSync(join(dir, 'file.txt')).toString().length
+    ).toStrictEqual(0)
+
+    done()
   })
 })
 
-test('truncateSync', function (t) {
-  t.plan(1)
+test('truncateSync', function () {
+  expect.assertions(1)
   var dir = join(
     os.tmpdir(),
     Math.random()
@@ -35,5 +39,7 @@ test('truncateSync', function (t) {
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
   subfs(dir, fs).truncateSync('file.txt', 0)
-  t.equal(fs.readFileSync(join(dir, 'file.txt')).toString().length, 0)
+  expect(
+    fs.readFileSync(join(dir, 'file.txt')).toString().length
+  ).toStrictEqual(0)
 })

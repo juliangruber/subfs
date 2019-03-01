@@ -1,11 +1,11 @@
-var test = require('tap').test
 var fs = require('fs')
-var subfs = require('..')
 var os = require('os')
 var join = require('path').join
 
-test('mkdir', function (t) {
-  t.plan(2)
+var subfs = require('..')
+
+test('mkdir', function (done) {
+  expect.assertions(2)
   var dir = join(
     os.tmpdir(),
     Math.random()
@@ -16,13 +16,15 @@ test('mkdir', function (t) {
   fs.mkdirSync(dir)
 
   subfs(dir, fs).mkdir('dir', function (err) {
-    t.error(err)
-    t.ok(fs.existsSync(join(dir, 'dir')))
+    expect(err).toBeFalsy()
+    expect(fs.existsSync(join(dir, 'dir'))).toBeTruthy()
+
+    done()
   })
 })
 
-test('mkdirSync', function (t) {
-  t.plan(1)
+test('mkdirSync', function () {
+  expect.assertions(1)
   var dir = join(
     os.tmpdir(),
     Math.random()
@@ -33,5 +35,5 @@ test('mkdirSync', function (t) {
   fs.mkdirSync(dir)
 
   subfs(dir, fs).mkdirSync('dir')
-  t.ok(fs.existsSync(join(dir, 'dir')))
+  expect(fs.existsSync(join(dir, 'dir'))).toBeTruthy()
 })
