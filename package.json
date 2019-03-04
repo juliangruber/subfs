@@ -9,13 +9,13 @@
   "homepage": "https://github.com/juliangruber/subfs",
   "main": "index.js",
   "scripts": {
-    "test": "prettier-standard '**/*.js' && standard && tap test/*.js"
+    "pretest": "prettier-standard '**/*.js' && standard",
+    "test": "jest --coverage --notify"
   },
-  "dependencies": {},
   "devDependencies": {
+    "jest": "^24.1.0",
     "prettier-standard": "^9.1.1",
-    "standard": "^12.0.1",
-    "tap": "~10.3.0"
+    "standard": "^12.0.1"
   },
   "keywords": [
     "fs",
@@ -29,5 +29,11 @@
     "email": "mail@juliangruber.com",
     "url": "http://juliangruber.com"
   },
-  "license": "MIT"
+  "contributors": [
+    "Jesús Leganés-Combarro 'piranna' <piranna@gmail.com>"
+  ],
+  "license": "MIT",
+  "standard": {
+    "env": [ "jest" ]
+  }
 }

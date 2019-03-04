@@ -1,39 +1,42 @@
-var test = require('tap').test
 var fs = require('fs')
-var subfs = require('..')
 var os = require('os')
 var join = require('path').join
 
-test('truncate', function (t) {
-  t.plan(2)
+var subfs = require('..')
+
+test('readFile', function (done) {
+  expect.assertions(2)
   var dir = join(
     os.tmpdir(),
     Math.random()
       .toString(16)
       .slice(2)
   )
-
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(fs, dir).truncate('file.txt', 0, function (err) {
-    t.error(err)
-    t.equal(fs.readFileSync(join(dir, 'file.txt')).toString().length, 0)
+  subfs(dir, fs).readFile('file.txt', function (err, value) {
+    expect(err).toBeFalsy()
+    expect(value.toString()).toStrictEqual('foobar')
+
+    done()
   })
 })
 
-test('truncateSync', function (t) {
-  t.plan(1)
+test('readFileSync', function () {
+  expect.assertions(1)
   var dir = join(
     os.tmpdir(),
     Math.random()
       .toString(16)
       .slice(2)
   )
-
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(fs, dir).truncateSync('file.txt', 0)
-  t.equal(fs.readFileSync(join(dir, 'file.txt')).toString().length, 0)
+  expect(
+    subfs(dir, fs)
+      .readFileSync('file.txt')
+      .toString()
+  ).toStrictEqual('foobar')
 })
