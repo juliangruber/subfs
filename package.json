@@ -13,9 +13,9 @@
     "test": "jest --coverage --notify"
   },
   "devDependencies": {
-    "jest": "^24.1.0",
-    "prettier-standard": "^9.1.1",
-    "standard": "^12.0.1"
+    "jest": "^24.9.0",
+    "prettier-standard": "^16.1.0",
+    "standard": "^14.3.1"
   },
   "keywords": [
     "fs",
@@ -34,6 +34,8 @@
   ],
   "license": "MIT",
   "standard": {
-    "env": [ "jest" ]
+    "env": [
+      "jest"
+    ]
   }
 }
