@@ -47,10 +47,8 @@ function sub (target, src, dir, oneArgumentFunctions, twoArgumentsFunctions) {
     const func = src[m]
     if (!func) return
 
-    target[m] = function (...args) {
-      args[0] = up(dir, args[0])
-
-      return func.apply(src, args)
+    target[m] = function (args0, ...args) {
+      return func.call(src, up(dir, args0), ...args)
     }
   })
 
@@ -59,30 +57,27 @@ function sub (target, src, dir, oneArgumentFunctions, twoArgumentsFunctions) {
     const func = src[m]
     if (!func) return
 
-    target[m] = function (...args) {
-      args[0] = up(dir, args[0])
-      args[1] = up(dir, args[1])
-
-      return func.apply(src, args)
+    target[m] = function (args0, args1, ...args) {
+      return func.call(src, up(dir, args0), up(dir, args1), ...args)
     }
   })
 }
 
-module.exports = function (dir, _fs = fs) {
+module.exports = function ({dir = '.', fs = fs} = {}) {
   const result = {}
 
   Object.defineProperty(result, '_resolve', { value: up.bind(result, dir) })
 
-  sub(result, _fs, dir, ONE_ARGUMENT_CALLBACKS, TWO_ARGUMENTS_CALLBACKS)
+  sub(result, fs, dir, ONE_ARGUMENT_CALLBACKS, TWO_ARGUMENTS_CALLBACKS)
 
   // Promises
-  const { promises } = _fs
-  if (!promises) return
+  const { promises } = fs
+  if (promises) {
+    const target = {}
+    result.promises = target
 
-  const target = {}
-  result.promises = target
-
-  sub(target, promises, dir, ONE_ARGUMENT_PROMISES, TWO_ARGUMENTS_PROMISES)
+    sub(target, promises, dir, ONE_ARGUMENT_PROMISES, TWO_ARGUMENTS_PROMISES)
+  }
 
   return result
 }
