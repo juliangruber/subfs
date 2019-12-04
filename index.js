@@ -63,7 +63,7 @@ function sub (target, src, dir, oneArgumentFunctions, twoArgumentsFunctions) {
   })
 }
 
-module.exports = function ({dir = '.', fs = _fs} = {}) {
+module.exports = function ({ dir = '.', fs = _fs } = {}) {
   const result = {}
 
   Object.defineProperty(result, '_resolve', { value: up.bind(result, dir) })
