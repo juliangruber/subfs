@@ -1,4 +1,4 @@
-const fs = require('fs')
+const _fs = require('fs')
 
 const up = require('./lib/up')
 
@@ -63,7 +63,7 @@ function sub (target, src, dir, oneArgumentFunctions, twoArgumentsFunctions) {
   })
 }
 
-module.exports = function ({dir = '.', fs = fs} = {}) {
+module.exports = function ({dir = '.', fs = _fs} = {}) {
   const result = {}
 
   Object.defineProperty(result, '_resolve', { value: up.bind(result, dir) })
