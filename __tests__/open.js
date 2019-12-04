@@ -15,7 +15,7 @@ test('open', function (done) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(dir, fs).open('file.txt', 'r', function (err, fd) {
+  subfs({ dir, fs }).open('file.txt', 'r', function (err, fd) {
     expect(err).toBeFalsy()
     expect(fd).toBeTruthy()
 
@@ -34,5 +34,5 @@ test('openSync', function () {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  expect(subfs(dir, fs).openSync('file.txt', 'r')).toBeTruthy()
+  expect(subfs({ dir, fs }).openSync('file.txt', 'r')).toBeTruthy()
 })

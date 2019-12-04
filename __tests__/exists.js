@@ -16,7 +16,7 @@ test('exists', function (done) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(dir, fs).exists('file.txt', function (exists) {
+  subfs({ dir, fs }).exists('file.txt', function (exists) {
     expect(exists).toBeTruthy()
 
     done()
@@ -35,5 +35,5 @@ test('existsSync', function () {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  expect(subfs(dir, fs).existsSync('file.txt')).toBeTruthy()
+  expect(subfs({ dir, fs }).existsSync('file.txt')).toBeTruthy()
 })

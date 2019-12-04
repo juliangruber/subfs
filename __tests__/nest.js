@@ -19,7 +19,9 @@ test('nest', function (done) {
   fs.writeFile(join(dir, 'dir', 'file.txt'), 'foobar', function (err) {
     expect(err).toBeFalsy()
 
-    subfs('dir', subfs(dir, fs)).exists('file.txt', function (exists) {
+    subfs({ dir: 'dir', fs: subfs({ dir, fs }) }).exists('file.txt', function (
+      exists
+    ) {
       expect(exists).toBeTruthy()
 
       done()

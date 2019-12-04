@@ -15,7 +15,7 @@ test('rename', function (done) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(dir, fs).rename('file.txt', 'renamed.txt', function (err) {
+  subfs({ dir, fs }).rename('file.txt', 'renamed.txt', function (err) {
     expect(err).toBeFalsy()
     expect(fs.existsSync(join(dir, 'file.txt'))).toBeFalsy()
     expect(fs.existsSync(join(dir, 'renamed.txt'))).toBeTruthy()
@@ -35,7 +35,7 @@ test('renameSync', function () {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(dir, fs).renameSync('file.txt', 'renamed.txt')
+  subfs({ dir, fs }).renameSync('file.txt', 'renamed.txt')
   expect(fs.existsSync(join(dir, 'file.txt'))).toBeFalsy()
   expect(fs.existsSync(join(dir, 'renamed.txt'))).toBeTruthy()
 })

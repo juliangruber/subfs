@@ -16,7 +16,7 @@ test('truncate', function (done) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(dir, fs).truncate('file.txt', 0, function (err) {
+  subfs({ dir, fs }).truncate('file.txt', 0, function (err) {
     expect(err).toBeFalsy()
     expect(
       fs.readFileSync(join(dir, 'file.txt')).toString().length
@@ -38,7 +38,7 @@ test('truncateSync', function () {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(dir, fs).truncateSync('file.txt', 0)
+  subfs({ dir, fs }).truncateSync('file.txt', 0)
   expect(
     fs.readFileSync(join(dir, 'file.txt')).toString().length
   ).toStrictEqual(0)

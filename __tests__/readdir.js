@@ -15,7 +15,7 @@ test('readdir', function (done) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(dir, fs).readdir('/', function (err, files) {
+  subfs({ dir, fs }).readdir('/', function (err, files) {
     expect(err).toBeFalsy()
     expect(files).toEqual(['file.txt'])
 
@@ -34,5 +34,5 @@ test('readdirSync', function () {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  expect(subfs(dir, fs).readdirSync('/')).toEqual(['file.txt'])
+  expect(subfs({ dir, fs }).readdirSync('/')).toEqual(['file.txt'])
 })

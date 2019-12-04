@@ -15,7 +15,7 @@ test('stat', function (done) {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  subfs(dir, fs).stat('file.txt', function (err, stat) {
+  subfs({ dir, fs }).stat('file.txt', function (err, stat) {
     expect(err).toBeFalsy()
     expect(stat).toBeTruthy()
 
@@ -34,5 +34,5 @@ test('statSync', function () {
   fs.mkdirSync(dir)
   fs.writeFileSync(join(dir, 'file.txt'), 'foobar')
 
-  expect(subfs(dir, fs).statSync('file.txt')).toBeTruthy()
+  expect(subfs({ dir, fs }).statSync('file.txt')).toBeTruthy()
 })

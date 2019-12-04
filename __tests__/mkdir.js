@@ -15,7 +15,7 @@ test('mkdir', function (done) {
 
   fs.mkdirSync(dir)
 
-  subfs(dir, fs).mkdir('dir', function (err) {
+  subfs({ dir, fs }).mkdir('dir', function (err) {
     expect(err).toBeFalsy()
     expect(fs.existsSync(join(dir, 'dir'))).toBeTruthy()
 
@@ -34,6 +34,6 @@ test('mkdirSync', function () {
 
   fs.mkdirSync(dir)
 
-  subfs(dir, fs).mkdirSync('dir')
+  subfs({ dir, fs }).mkdirSync('dir')
   expect(fs.existsSync(join(dir, 'dir'))).toBeTruthy()
 })
